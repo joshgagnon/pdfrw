@@ -217,7 +217,9 @@ class PdfReader(PdfDict):
         obj = source.next()
         func = self.special.get(obj)
         if func is not None:
-            obj = func(source)
+            newObj = func(source)
+            if newObj:
+                obj = newObj
 
         self.indirect_objects[key] = obj
         self.deferred_objects.remove(key)
