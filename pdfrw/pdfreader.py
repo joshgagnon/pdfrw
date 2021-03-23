@@ -217,16 +217,15 @@ class PdfReader(PdfDict):
         obj = source.next()
         func = self.special.get(obj)
         if func is not None:
-            newObj = func(source)
-            if newObj:
-                obj = newObj
+            obj = func(source)
 
         self.indirect_objects[key] = obj
         self.deferred_objects.remove(key)
 
         # Mark the object as indirect, and
         # just return it if it is a simple object.
-        obj.indirect = key
+        if obj is not None:
+            obj.indirect = key
         tok = source.next()
         if tok == 'endobj':
             return obj
